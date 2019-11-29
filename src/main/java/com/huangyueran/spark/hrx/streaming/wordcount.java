@@ -1,4 +1,4 @@
-package main.java.com.huangyueran.spark.hrx.streaming;
+package com.huangyueran.spark.hrx.streaming;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
