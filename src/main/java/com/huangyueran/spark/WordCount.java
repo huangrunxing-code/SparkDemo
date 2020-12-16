@@ -11,6 +11,7 @@ import org.apache.spark.api.java.function.PairFunction;
 import org.apache.spark.api.java.function.VoidFunction;
 import scala.Tuple2;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -23,13 +24,16 @@ public class WordCount {
 	public static void main(String[] args) {
 		JavaSparkContext sc = SparkUtils.getLocalSparkContext(WordCount.class);
 
-		JavaRDD<String> text = sc.textFile(Constant.LOCAL_FILE_PREX +"/data/resources/test.txt");
+		//JavaRDD<String> text = sc.textFile(Constant.LOCAL_FILE_PREX +"/data/resources/test.txt");
+		List<String> cclist=new ArrayList<String>();
+		cclist.add("nihao wohao da dd dd ");
+		cclist.add("hh ccc da cc cc ");
+		cclist.add("aa ccc aa da da ");
+		JavaRDD<String> text = sc.parallelize(cclist);
 		JavaRDD<String> words = text.flatMap(new FlatMapFunction<String, String>() {
-			private static final long serialVersionUID = 1L;
-
 			@Override
-			public Iterator<String> call(String line) throws Exception {
-				return Arrays.asList(line.split(" ")).iterator();
+			public Iterator<String> call(String s) throws Exception {
+				return Arrays.asList(s.split(" ")).iterator();
 			}
 		});
 
