@@ -30,10 +30,18 @@ public class WordCount {
 		cclist.add("hh ccc da cc cc ");
 		cclist.add("aa ccc aa da da ");
 		JavaRDD<String> text = sc.parallelize(cclist);
-		JavaRDD<String> words = text.flatMap(new FlatMapFunction<String, String>() {
+		text.flatMap(new FlatMapFunction<String, String>() {
 			@Override
 			public Iterator<String> call(String s) throws Exception {
 				return Arrays.asList(s.split(" ")).iterator();
+			}
+		});
+		JavaRDD<String> words = text.flatMap(new FlatMapFunction<String, String>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Iterator<String> call(String line) throws Exception {
+				return Arrays.asList(line.split(" ")).iterator();
 			}
 		});
 

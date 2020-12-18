@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * @author huangyueran
  * @category aggregateByKey函数对PairRDD中相同Key的值进行聚合操作，在聚合过程中同样使用了一个中立的初始值。
- * 和aggregate函数类似，aggregateByKey返回值得类型不需要和RDD中value的类型一致。
+ * 和aggregate函数类似，aggregateByKey返回值的类型不需要和RDD中value的类型一致。
  * 因为aggregateByKey是对相同Key中的值进行聚合操作，所以aggregateByKey函数最终返回的类型还是Pair
  * RDD，对应的结果是Key和聚合好的值；而aggregate函数直接返回非RDD的结果。
  * 1.zeroValue：表示在每个分区中第一次拿到key值时,用于创建一个返回类型的函数,这个函数最终会被包装成先生成一个返回类型,
@@ -30,13 +30,13 @@ public class AggregateByKey {
     }
 
     private static void aggregateByKey(JavaSparkContext sc) {
-        List<Tuple2<Integer, Integer>> datas = new ArrayList<>();
-        datas.add(new Tuple2<>(1, 3));
-        datas.add(new Tuple2<>(1, 2));
-        datas.add(new Tuple2<>(1, 4));
-        datas.add(new Tuple2<>(2, 3));
+        List<Tuple2<String, Integer>> datas = new ArrayList<>();
+        datas.add(new Tuple2<>("a", 3));
+        datas.add(new Tuple2<>("a", 2));
+        datas.add(new Tuple2<>("b", 4));
+        datas.add(new Tuple2<>("b", 3));
 
-        List<Tuple2<Integer, Integer>> list = sc.parallelizePairs(datas, 2)
+        List<Tuple2<String, Integer>> list = sc.parallelizePairs(datas)
                 .aggregateByKey(0, new Function2<Integer, Integer, Integer>() {
                     @Override
                     public Integer call(Integer v1, Integer v2) throws Exception {
@@ -51,7 +51,7 @@ public class AggregateByKey {
                     }
                 }).collect();
 
-        List<Tuple2<Integer, Integer>> list2 = sc.parallelizePairs(datas, 2)
+        List<Tuple2<String, Integer>> list2 = sc.parallelizePairs(datas, 2)
                 .reduceByKey(new Function2<Integer, Integer, Integer>() {
 
                     @Override
@@ -64,9 +64,6 @@ public class AggregateByKey {
             System.out.println(t._1 + "=====" + t._2);
         }
 
-        for (Tuple2 t : list2) {
-            System.out.println(t._1 + "=====" + t._2);
-        }
     }
 
 }
