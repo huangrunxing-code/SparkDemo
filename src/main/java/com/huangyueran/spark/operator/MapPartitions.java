@@ -27,7 +27,7 @@ public class MapPartitions {
 	private static void mapPartitions(JavaSparkContext sc) {
 		List<String> names = Arrays.asList("张三1", "李四1", "王五1", "张三2", "李四2", "王五2", "张三3", "李四3", "王五3", "张三4");
 
-		JavaRDD<String> namesRDD = sc.parallelize(names, 3);
+		JavaRDD<String> namesRDD = sc.parallelize(names, 1);
 		JavaRDD<String> mapPartitionsRDD = namesRDD.mapPartitions(new FlatMapFunction<Iterator<String>, String>() {
 			int count = 0;
 
